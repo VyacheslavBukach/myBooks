@@ -24,7 +24,6 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvBooks.adapter = bookAdapter
-        binding.rvReadingBooks.adapter = bookAdapter
         bookAdapter.submitList(books)
     }
 
