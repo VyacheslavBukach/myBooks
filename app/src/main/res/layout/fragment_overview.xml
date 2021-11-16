@@ -19,8 +19,8 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="My books"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -41,6 +41,7 @@
         tools:listitem="@layout/item_book" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_add_book"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_margin="16dp"
