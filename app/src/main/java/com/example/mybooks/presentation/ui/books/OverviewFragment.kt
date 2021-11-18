@@ -26,26 +26,31 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.fbAddBook.setOnClickListener {
-            findNavController().navigate(R.id.action_overviewFragment_to_bookFragment)
-        }
-        binding.rvBooks.adapter = bookAdapter
-
 //        viewModel.addToFirestoreTestDatabase()
-        viewLifecycleOwner.lifecycleScope.launch {
-            with(binding) {
-                viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is UiState.Loading -> {
-                            pbProgress.visibility = View.VISIBLE
+
+        with(binding) {
+            fbAddBook.setOnClickListener {
+                findNavController().navigate(R.id.action_overviewFragment_to_bookFragment)
+            }
+            rvBooks.adapter = bookAdapter
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                with(viewModel) {
+                    uiState.collect { uiState ->
+                        when (uiState) {
+                            is UiState.Loading -> {
+                                pbProgress.visibility = View.VISIBLE
+                            }
+                            is UiState.Success -> {
+                                pbProgress.visibility = View.INVISIBLE
+                            }
+                            is UiState.Failed -> {
+                                pbProgress.visibility = View.INVISIBLE
+                            }
                         }
-                        is UiState.Success -> {
-                            bookAdapter.submitList(uiState.data)
-                            pbProgress.visibility = View.INVISIBLE
-                        }
-                        is UiState.Failed -> {
-                            pbProgress.visibility = View.INVISIBLE
-                        }
+                    }
+                    booksSharedFlow.collect {
+                        bookAdapter.submitList(it)
                     }
                 }
             }

@@ -1,15 +1,14 @@
 package com.example.mybooks.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.mybooks.data.Book
 import com.example.mybooks.data.books
 import com.example.mybooks.util.UiState
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,32 +17,38 @@ class OverviewViewModel @Inject constructor(
     private val db: FirebaseFirestore
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<UiState<List<Book>>> =
-        MutableStateFlow(UiState.Success(listOf()))
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState = _uiState.asStateFlow()
+    private val _booksSharedFlow = MutableStateFlow<List<Book>>(listOf())
+    val booksSharedFlow = _booksSharedFlow.asStateFlow()
+    // Firestore listener
+    private var reg: ListenerRegistration
 
     init {
-        viewModelScope.launch {
-            _uiState.value = UiState.Loading()
-            db.collection("books")
-                .get()
-                .addOnSuccessListener { result ->
-                    val list = mutableListOf<Book>()
-                    for (document in result) {
-                        val item = Book(
-                            title = document.data["title"].toString(),
-                            author = document.data["author"].toString()
-                        )
-                        list.add(item)
-                        Timber.tag("FIRESTORE_TEST").d("${document.id} => ${document.data}")
-                    }
-                    _uiState.value = UiState.Success(list)
-                }
-                .addOnFailureListener { exception ->
-                    _uiState.value = UiState.Failed("$exception")
-                    Timber.tag("FIRESTORE_TEST").d("Error getting documents $exception")
-                }
+        _uiState.value = UiState.Loading
+        reg = db.collection("books").addSnapshotListener { value, e ->
+            if (e != null) {
+                Timber.tag("FIRESTORE_TEST").d("Listen failed $e")
+                _uiState.value = UiState.Failed("$e")
+                return@addSnapshotListener
+            }
+            val books = mutableListOf<Book>()
+            for (document in value!!) {
+                val item = Book(
+                    title = document.data["title"].toString(),
+                    author = document.data["author"].toString()
+                )
+                books.add(item)
+            }
+            _booksSharedFlow.value = books
+            _uiState.value = UiState.Success
+            Timber.tag("FIRESTORE_TEST").d("Current books: $books")
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        reg.remove()
     }
 
     fun addToFirestoreTestDatabase() {
