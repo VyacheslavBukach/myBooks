@@ -1,6 +1,7 @@
 package com.example.mybooks.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.mybooks.data.Book
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -11,10 +12,10 @@ class BookViewModel @Inject constructor(
     private val db: FirebaseFirestore
 ) : ViewModel() {
 
-    fun addToFirestore() {
+    fun addToFirestore(book: Book) {
         val user = hashMapOf(
-            "title" to "Ada",
-            "author" to "Lovelace"
+            "title" to book.title,
+            "author" to book.author
         )
 
         db.collection("books")

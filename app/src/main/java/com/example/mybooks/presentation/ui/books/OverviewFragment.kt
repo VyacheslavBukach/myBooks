@@ -14,7 +14,6 @@ import com.example.mybooks.presentation.viewmodel.OverviewViewModel
 import com.example.mybooks.util.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -34,11 +33,20 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
 
 //        viewModel.addToFirestoreTestDatabase()
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect { uiState ->
-                when (uiState) {
-                    is UiState.Loading -> {}
-                    is UiState.Success -> bookAdapter.submitList(uiState.data)
-                    is UiState.Failed -> {}
+            with(binding) {
+                viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                            pbProgress.visibility = View.VISIBLE
+                        }
+                        is UiState.Success -> {
+                            bookAdapter.submitList(uiState.data)
+                            pbProgress.visibility = View.INVISIBLE
+                        }
+                        is UiState.Failed -> {
+                            pbProgress.visibility = View.INVISIBLE
+                        }
+                    }
                 }
             }
         }
