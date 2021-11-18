@@ -17,15 +17,15 @@ class OverviewViewModel @Inject constructor(
     private val db: FirebaseFirestore
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
+    private val _uiState: MutableStateFlow<UiState<List<Book>>> =
+        MutableStateFlow(UiState.Success(listOf()))
     val uiState = _uiState.asStateFlow()
-    private val _booksSharedFlow = MutableStateFlow<List<Book>>(listOf())
-    val booksSharedFlow = _booksSharedFlow.asStateFlow()
+
     // Firestore listener
     private var reg: ListenerRegistration
 
     init {
-        _uiState.value = UiState.Loading
+        _uiState.value = UiState.Loading()
         reg = db.collection("books").addSnapshotListener { value, e ->
             if (e != null) {
                 Timber.tag("FIRESTORE_TEST").d("Listen failed $e")
@@ -40,8 +40,7 @@ class OverviewViewModel @Inject constructor(
                 )
                 books.add(item)
             }
-            _booksSharedFlow.value = books
-            _uiState.value = UiState.Success
+            _uiState.value = UiState.Success(books)
             Timber.tag("FIRESTORE_TEST").d("Current books: $books")
         }
     }

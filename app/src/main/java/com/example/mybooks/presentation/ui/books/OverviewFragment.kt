@@ -43,14 +43,12 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
                             }
                             is UiState.Success -> {
                                 pbProgress.visibility = View.INVISIBLE
+                                bookAdapter.submitList(uiState.data)
                             }
                             is UiState.Failed -> {
                                 pbProgress.visibility = View.INVISIBLE
                             }
                         }
-                    }
-                    booksSharedFlow.collect {
-                        bookAdapter.submitList(it)
                     }
                 }
             }
