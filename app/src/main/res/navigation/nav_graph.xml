@@ -7,7 +7,23 @@
 
     <fragment
         android:id="@+id/overviewFragment"
-        android:name="com.example.mybooks.presentation.ui.OverviewFragment"
+        android:name="com.example.mybooks.presentation.ui.books.OverviewFragment"
         android:label="fragment_overview"
-        tools:layout="@layout/fragment_overview" />
+        tools:layout="@layout/fragment_overview" >
+        <action
+            android:id="@+id/action_overviewFragment_to_bookFragment"
+            app:destination="@id/bookFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookFragment"
+        android:name="com.example.mybooks.presentation.ui.book.BookFragment"
+        android:label="fragment_book"
+        tools:layout="@layout/fragment_book" >
+        <argument
+            android:name="book_title"
+            app:argType="string" />
+        <argument
+            android:name="book_author"
+            app:argType="string" />
+    </fragment>
 </navigation>
