@@ -12,10 +12,10 @@ class BookViewModel @Inject constructor(
     private val db: FirebaseFirestore
 ) : ViewModel() {
 
-    fun addToFirestore(book: Book) {
+    fun addToFirestore(title: String, author: String) {
         val user = hashMapOf(
-            "title" to book.title,
-            "author" to book.author
+            "title" to title,
+            "author" to author
         )
 
         db.collection("books")

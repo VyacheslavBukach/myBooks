@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.mybooks.R
-import com.example.mybooks.data.Book
 import com.example.mybooks.databinding.FragmentBookBinding
 import com.example.mybooks.presentation.viewmodel.BookViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,12 +21,15 @@ class BookFragment : Fragment(R.layout.fragment_book) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val title = args.bookTitle
+        val author = args.bookAuthor
+
         with(binding) {
             btnBookSave.setOnClickListener {
-                viewModel.addToFirestore(Book(title = "fd", author = "d"))
+                viewModel.addToFirestore(title, author)
             }
-            tvBookTitle.setText(args.bookTitle)
-            tvBookAuthor.setText(args.bookAuthor)
+            tvBookTitle.setText(title)
+            tvBookAuthor.setText(author)
         }
     }
 }

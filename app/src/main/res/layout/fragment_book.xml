@@ -10,13 +10,13 @@
         android:id="@+id/tv_book_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Title" />
+        android:hint="Title" />
 
     <EditText
         android:id="@+id/tv_book_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Author" />
+        android:hint="Author" />
 
     <Button
         android:id="@+id/btn_book_save"
