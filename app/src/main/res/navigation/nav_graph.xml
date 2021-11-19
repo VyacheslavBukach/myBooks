@@ -20,6 +20,10 @@
         android:label="fragment_book"
         tools:layout="@layout/fragment_book">
         <argument
+            android:name="book_uuid"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
             android:name="book_title"
             android:defaultValue=""
             app:argType="string" />
@@ -27,5 +31,9 @@
             android:name="book_author"
             android:defaultValue=""
             app:argType="string" />
+        <argument
+            android:name="isUpdate"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 </navigation>

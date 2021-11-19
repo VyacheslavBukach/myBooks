@@ -1,7 +1,6 @@
 package com.example.mybooks.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.mybooks.data.Book
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
@@ -27,5 +26,25 @@ class BookViewModel @Inject constructor(
             .addOnFailureListener { e ->
                 Timber.tag("FIRESTORE_TEST").d("Error adding document $e")
             }
+    }
+
+    fun updateInFirestore(uuid: String, title: String, author: String) {
+        db.collection("books")
+            .document(uuid)
+            .update("title", title, "author", author)
+            .addOnSuccessListener {
+                Timber.tag("FIRESTORE_TEST").d("DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Timber.tag("FIRESTORE_TEST").d("Error updating document $e")
+            }
+    }
+
+    fun deleteFromFirestore(uuid: String) {
+        db.collection("books")
+            .document(uuid)
+            .delete()
+            .addOnSuccessListener { }
+            .addOnFailureListener { }
     }
 }

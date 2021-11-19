@@ -21,7 +21,7 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
 
     private val binding: FragmentOverviewBinding by viewBinding()
     private val viewModel by viewModels<OverviewViewModel>()
-    private val bookAdapter = BookAdapter { openBookDetail(it.title, it.author) }
+    private val bookAdapter = BookAdapter { openBookDetail(it.uuid, it.title, it.author) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,9 +55,14 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
         }
     }
 
-    private fun openBookDetail(title: String, author: String) {
+    private fun openBookDetail(uuid: String, title: String, author: String) {
         val action = OverviewFragmentDirections
-            .actionOverviewFragmentToBookFragment(title, author)
+            .actionOverviewFragmentToBookFragment(
+                bookUuid = uuid,
+                bookTitle = title,
+                bookAuthor = author,
+                isUpdate = true
+            )
         findNavController().navigate(action)
     }
 }

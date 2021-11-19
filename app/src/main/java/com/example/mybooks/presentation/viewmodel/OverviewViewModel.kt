@@ -2,7 +2,6 @@ package com.example.mybooks.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.mybooks.data.Book
-import com.example.mybooks.data.books
 import com.example.mybooks.util.UiState
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -35,6 +34,7 @@ class OverviewViewModel @Inject constructor(
             val books = mutableListOf<Book>()
             for (document in value!!) {
                 val item = Book(
+                    uuid = document.id,
                     title = document.data["title"].toString(),
                     author = document.data["author"].toString()
                 )
@@ -50,21 +50,21 @@ class OverviewViewModel @Inject constructor(
         reg.remove()
     }
 
-    fun addToFirestoreTestDatabase() {
-        books.forEach { book ->
-            val user = hashMapOf(
-                "title" to book.title,
-                "author" to book.author
-            )
-            db.collection("books")
-                .add(user)
-                .addOnSuccessListener { documentReference ->
-                    Timber.tag("FIRESTORE_TEST")
-                        .d("DocumentSnapshot added with ID: ${documentReference.id}")
-                }
-                .addOnFailureListener { e ->
-                    Timber.tag("FIRESTORE_TEST").d("Error adding document $e")
-                }
-        }
-    }
+//    fun addToFirestoreTestDatabase() {
+//        books.forEach { book ->
+//            val user = hashMapOf(
+//                "title" to book.title,
+//                "author" to book.author
+//            )
+//            db.collection("books")
+//                .add(user)
+//                .addOnSuccessListener { documentReference ->
+//                    Timber.tag("FIRESTORE_TEST")
+//                        .d("DocumentSnapshot added with ID: ${documentReference.id}")
+//                }
+//                .addOnFailureListener { e ->
+//                    Timber.tag("FIRESTORE_TEST").d("Error adding document $e")
+//                }
+//        }
+//    }
 }

@@ -21,15 +21,27 @@ class BookFragment : Fragment(R.layout.fragment_book) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val title = args.bookTitle
-        val author = args.bookAuthor
-
         with(binding) {
-            btnBookSave.setOnClickListener {
-                viewModel.addToFirestore(title, author)
+            if (args.isUpdate) {
+                tvBookTitle.setText(args.bookTitle)
+                tvBookAuthor.setText(args.bookAuthor)
+                btnBookDelete.visibility = View.VISIBLE
+                btnBookDelete.setOnClickListener {
+                    viewModel.deleteFromFirestore(args.bookUuid)
+                }
+                btnBookSave.setOnClickListener {
+                    val title = tvBookTitle.text.toString()
+                    val author = tvBookAuthor.text.toString()
+                    viewModel.updateInFirestore(args.bookUuid, title, author)
+                }
+            } else {
+                btnBookDelete.visibility = View.INVISIBLE
+                btnBookSave.setOnClickListener {
+                    val title = tvBookTitle.text.toString()
+                    val author = tvBookAuthor.text.toString()
+                    viewModel.addToFirestore(title, author)
+                }
             }
-            tvBookTitle.setText(title)
-            tvBookAuthor.setText(author)
         }
     }
 }
