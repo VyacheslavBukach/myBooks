@@ -11,6 +11,7 @@ import com.example.mybooks.R
 import com.example.mybooks.databinding.FragmentOverviewBinding
 import com.example.mybooks.presentation.adapter.BookAdapter
 import com.example.mybooks.presentation.viewmodel.OverviewViewModel
+import com.example.mybooks.util.AuthState
 import com.example.mybooks.util.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -26,9 +27,10 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        viewModel.addToFirestoreTestDatabase()
-
         with(binding) {
+            btnLogout.setOnClickListener {
+                viewModel.logOut()
+            }
             fbAddBook.setOnClickListener {
                 findNavController().navigate(R.id.action_overviewFragment_to_bookFragment)
             }
@@ -36,17 +38,30 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
 
             viewLifecycleOwner.lifecycleScope.launch {
                 with(viewModel) {
-                    uiState.collect { uiState ->
-                        when (uiState) {
-                            is UiState.Loading -> {
-                                pbProgress.visibility = View.VISIBLE
+                    launch {
+                        authState.collect { authState ->
+                            when (authState) {
+                                is AuthState.NotLoggedIn -> {
+                                    findNavController().navigate(R.id.loginFragment)
+                                }
+                                is AuthState.LoggedIn -> {}
+                                is AuthState.Failed -> {}
                             }
-                            is UiState.Success -> {
-                                pbProgress.visibility = View.INVISIBLE
-                                bookAdapter.submitList(uiState.data)
-                            }
-                            is UiState.Failed -> {
-                                pbProgress.visibility = View.INVISIBLE
+                        }
+                    }
+                    launch {
+                        uiState.collect { uiState ->
+                            when (uiState) {
+                                is UiState.Loading -> {
+                                    pbProgress.visibility = View.VISIBLE
+                                }
+                                is UiState.Success -> {
+                                    pbProgress.visibility = View.INVISIBLE
+                                    bookAdapter.submitList(uiState.data)
+                                }
+                                is UiState.Failed -> {
+                                    pbProgress.visibility = View.INVISIBLE
+                                }
                             }
                         }
                     }
