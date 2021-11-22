@@ -19,17 +19,20 @@ class AuthViewModel @Inject constructor(
 
     init {
         if (auth.currentUser != null) _authState.value = AuthState.LoggedIn
-        else _authState.value = AuthState.Failed("user not auth")
+        else _authState.value = AuthState.NotLoggedIn
     }
 
     fun createAccount(email: String, password: String) {
+        _authState.value = AuthState.Loading
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Timber.tag("FIRESTORE_TEST").d("createUserWithEmail:success")
+                    _authState.value = AuthState.LoggedIn
                 } else {
                     // If sign in fails, display a message to the user.
+                    _authState.value = AuthState.Failed("${task.exception?.message}")
                     Timber.tag("FIRESTORE_TEST").d("createUserWithEmail:failure ${task.exception}")
                 }
 
@@ -37,6 +40,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signIn(email: String, password: String) {
+        _authState.value = AuthState.Loading
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -45,6 +49,7 @@ class AuthViewModel @Inject constructor(
                     _authState.value = AuthState.LoggedIn
                 } else {
                     // If sign in fails, display a message to the user.
+                    _authState.value = AuthState.Failed("${task.exception?.message}")
                     Timber.tag("FIRESTORE_TEST").d("signInWithEmail:failure ${task.exception}")
                 }
             }

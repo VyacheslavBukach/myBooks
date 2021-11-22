@@ -28,11 +28,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.authState.collect { authState ->
                 when (authState) {
-                    is AuthState.NotLoggedIn -> {}
+                    is AuthState.NotLoggedIn -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.tvError.visibility = View.GONE
+                    }
+                    is AuthState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.tvError.visibility = View.GONE
+                    }
                     is AuthState.LoggedIn -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.tvError.visibility = View.GONE
                         findNavController().navigate(R.id.action_loginFragment_to_overviewFragment)
                     }
                     is AuthState.Failed -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.tvError.visibility = View.VISIBLE
+                        binding.tvError.text = authState.message
                         Timber.tag("FIRESTORE_TEST").d("auth failed: ${authState.message}")
                     }
                 }
