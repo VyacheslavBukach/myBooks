@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.mybooks.presentation.ui.auth.RegisterFragment"
-        android:label="fragment_register"
+        android:label="@string/register"
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_overviewFragment"
@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.mybooks.presentation.ui.auth.LoginFragment"
-        android:label="fragment_login"
+        android:label="@string/login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_overviewFragment"
