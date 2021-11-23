@@ -52,9 +52,19 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
         with(binding) {
             btnRegister.setOnClickListener {
-                val email = tvEmail.text.toString()
-                val password = tvPassword.text.toString()
-                viewModel.createAccount(email, password)
+                val email = tvEmail.text.trim()
+                val password = tvPassword.text.trim()
+                when {
+                    email.isEmpty() -> {
+                        binding.tvEmail.error = "Field is empty"
+                    }
+                    password.isEmpty() -> {
+                        binding.tvPassword.error = "Field is empty"
+                    }
+                    else -> {
+                        viewModel.createAccount(email.toString(), password.toString())
+                    }
+                }
             }
             btnLogin.setOnClickListener {
                 findNavController().popBackStack()
