@@ -5,8 +5,10 @@ import com.example.mybooks.data.Book
 import com.example.mybooks.util.AuthState
 import com.example.mybooks.util.UiState
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
-    private val db: FirebaseFirestore,
+    private val dbRef: DatabaseReference,
     private val auth: FirebaseAuth
 ) : ViewModel() {
 
@@ -26,8 +28,8 @@ class OverviewViewModel @Inject constructor(
     private val _authState: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.LoggedIn)
     val authState = _authState.asStateFlow()
 
-    // Firestore listener
-    private lateinit var reg: ListenerRegistration
+    // Firebase listener
+    private lateinit var booksListener: ValueEventListener
 
     init {
         if (auth.currentUser != null) {
@@ -40,24 +42,25 @@ class OverviewViewModel @Inject constructor(
     private fun loggedIn() {
         _authState.value = AuthState.LoggedIn
         _uiState.value = UiState.Loading()
-        reg = db.collection("books").addSnapshotListener { value, e ->
-            if (e != null) {
-                Timber.tag("FIRESTORE_TEST").d("Listen failed $e")
-                _uiState.value = UiState.Failed("$e")
-                return@addSnapshotListener
+        booksListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val dataSnapshot = snapshot.child("Users").child(auth.currentUser!!.uid)
+                val books = dataSnapshot.children.map { snap ->
+                    val value = snap.value as HashMap<*, *>?
+                    val uuid = value?.get("uuid").toString()
+                    val title = value?.get("title").toString()
+                    val author = value?.get("author").toString()
+                    Book(uuid= uuid, title = title, author = author)
+                }
+                _uiState.value = UiState.Success(books)
+                Timber.tag("FIRESTORE_TEST").d("Current books: $books")
             }
-            val books = mutableListOf<Book>()
-            for (document in value!!) {
-                val item = Book(
-                    uuid = document.id,
-                    title = document.data["title"].toString(),
-                    author = document.data["author"].toString()
-                )
-                books.add(item)
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
             }
-            _uiState.value = UiState.Success(books)
-            Timber.tag("FIRESTORE_TEST").d("Current books: $books")
         }
+        dbRef.addValueEventListener(booksListener)
     }
 
     fun logOut() {
@@ -67,6 +70,6 @@ class OverviewViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        reg.remove()
+        dbRef.removeEventListener(booksListener)
     }
 }

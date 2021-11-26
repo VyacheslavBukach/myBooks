@@ -1,7 +1,9 @@
 package com.example.mybooks.di
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +16,9 @@ object FirebaseModule {
 
     @Singleton
     @Provides
-    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+    fun provideRealtimeDatabase(): DatabaseReference = Firebase
+        .database("https://mybooks-d3c82-default-rtdb.europe-west1.firebasedatabase.app")
+        .reference
 
     @Singleton
     @Provides

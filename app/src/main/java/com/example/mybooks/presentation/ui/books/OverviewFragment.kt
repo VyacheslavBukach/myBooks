@@ -1,6 +1,9 @@
 package com.example.mybooks.presentation.ui.books
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +26,26 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
     private val binding: FragmentOverviewBinding by viewBinding()
     private val viewModel by viewModels<OverviewViewModel>()
     private val bookAdapter = BookAdapter { openBookDetail(it.uuid, it.title, it.author) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_settings -> {
+                findNavController().navigate(R.id.action_overviewFragment_to_settingsFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
