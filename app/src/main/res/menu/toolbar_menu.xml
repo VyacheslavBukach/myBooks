@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_settings_white_24dp"
         android:title="@string/settings"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:contentDescription="@string/settings"
+        android:title="Logout"
+        app:showAsAction="always" />
 </menu>

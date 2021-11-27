@@ -43,6 +43,10 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
                 findNavController().navigate(R.id.action_overviewFragment_to_settingsFragment)
                 true
             }
+            R.id.menu_logout -> {
+                viewModel.logOut()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -51,9 +55,6 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            btnLogout.setOnClickListener {
-                viewModel.logOut()
-            }
             fbAddBook.setOnClickListener {
                 findNavController().navigate(R.id.action_overviewFragment_to_bookFragment)
             }
