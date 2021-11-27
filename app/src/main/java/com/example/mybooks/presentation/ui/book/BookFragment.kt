@@ -30,16 +30,40 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     viewModel.deleteFromFirestore(args.bookUuid)
                 }
                 btnBookSave.setOnClickListener {
-                    val title = tvBookTitle.text.toString()
-                    val author = tvBookAuthor.text.toString()
-                    viewModel.updateInFirestore(args.bookUuid, title, author)
+                    val title = tvBookTitle.text.trim()
+                    val author = tvBookAuthor.text.trim()
+                    when {
+                        title.isEmpty() -> {
+                            binding.tvBookTitle.error = "Field is empty"
+                        }
+                        author.isEmpty() -> {
+                            binding.tvBookAuthor.error = "Field is empty"
+                        }
+                        else -> {
+                            viewModel.updateInFirestore(
+                                args.bookUuid,
+                                title.toString(),
+                                author.toString()
+                            )
+                        }
+                    }
                 }
             } else {
                 btnBookDelete.visibility = View.INVISIBLE
                 btnBookSave.setOnClickListener {
-                    val title = tvBookTitle.text.toString()
-                    val author = tvBookAuthor.text.toString()
-                    viewModel.addToFirestore(title, author)
+                    val title = tvBookTitle.text.trim()
+                    val author = tvBookAuthor.text.trim()
+                    when {
+                        title.isEmpty() -> {
+                            binding.tvBookTitle.error = "Field is empty"
+                        }
+                        author.isEmpty() -> {
+                            binding.tvBookAuthor.error = "Field is empty"
+                        }
+                        else -> {
+                            viewModel.addToFirestore(title.toString(), author.toString())
+                        }
+                    }
                 }
             }
         }

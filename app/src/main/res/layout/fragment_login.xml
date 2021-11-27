@@ -51,8 +51,8 @@
         android:id="@+id/tv_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:visibility="gone"
+        tools:text="TextView"
         tools:visibility="visible" />
 
     <LinearLayout
