@@ -21,9 +21,12 @@ class BookFragment : Fragment(R.layout.fragment_book) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        changeUI(args.isUpdate)
+    }
 
+    private fun changeUI(update: Boolean) {
         with(binding) {
-            if (args.isUpdate) {
+            if (update) {
                 tvBookTitle.setText(args.bookTitle)
                 tvBookAuthor.setText(args.bookAuthor)
                 btnBookDelete.visibility = View.VISIBLE
@@ -35,12 +38,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     val title = tvBookTitle.text.trim()
                     val author = tvBookAuthor.text.trim()
                     when {
-                        title.isEmpty() -> {
-                            binding.tvBookTitle.error = "Field is empty"
-                        }
-                        author.isEmpty() -> {
-                            binding.tvBookAuthor.error = "Field is empty"
-                        }
+                        title.isEmpty() -> binding.tvBookTitle.error = "Field is empty"
+                        author.isEmpty() -> binding.tvBookAuthor.error = "Field is empty"
                         else -> {
                             viewModel.updateInFirestore(
                                 args.bookUuid,
@@ -57,12 +56,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     val title = tvBookTitle.text.trim()
                     val author = tvBookAuthor.text.trim()
                     when {
-                        title.isEmpty() -> {
-                            binding.tvBookTitle.error = "Field is empty"
-                        }
-                        author.isEmpty() -> {
-                            binding.tvBookAuthor.error = "Field is empty"
-                        }
+                        title.isEmpty() -> binding.tvBookTitle.error = "Field is empty"
+                        author.isEmpty() -> binding.tvBookAuthor.error = "Field is empty"
                         else -> {
                             viewModel.addToFirestore(title.toString(), author.toString())
                             findNavController().popBackStack()

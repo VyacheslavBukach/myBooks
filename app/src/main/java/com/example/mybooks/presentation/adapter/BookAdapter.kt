@@ -27,6 +27,7 @@ class BookAdapter(
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean =
-            oldItem.title == newItem.title && oldItem.author == newItem.author
+            oldItem.uuid == newItem.uuid && oldItem.title == newItem.title &&
+                    oldItem.author == newItem.author
     }
 }

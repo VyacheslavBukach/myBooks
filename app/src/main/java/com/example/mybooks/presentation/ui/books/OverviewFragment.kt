@@ -53,21 +53,27 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUI()
+        initStates()
+    }
 
+    private fun initUI() {
         with(binding) {
+            rvBooks.adapter = bookAdapter
             fbAddBook.setOnClickListener {
                 findNavController().navigate(R.id.action_overviewFragment_to_bookFragment)
             }
-            rvBooks.adapter = bookAdapter
+        }
+    }
 
+    private fun initStates() {
+        with(binding) {
             viewLifecycleOwner.lifecycleScope.launch {
                 with(viewModel) {
                     launch {
                         authState.collect { authState ->
                             when (authState) {
-                                is AuthState.NotLoggedIn -> {
-                                    findNavController().navigate(R.id.loginFragment)
-                                }
+                                is AuthState.NotLoggedIn -> findNavController().navigate(R.id.loginFragment)
                                 is AuthState.LoggedIn -> {}
                                 is AuthState.Failed -> {}
                             }
@@ -76,16 +82,12 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
                     launch {
                         uiState.collect { uiState ->
                             when (uiState) {
-                                is UiState.Loading -> {
-                                    pbProgress.visibility = View.VISIBLE
-                                }
+                                is UiState.Loading -> pbProgress.visibility = View.VISIBLE
                                 is UiState.Success -> {
                                     pbProgress.visibility = View.INVISIBLE
                                     bookAdapter.submitList(uiState.data)
                                 }
-                                is UiState.Failed -> {
-                                    pbProgress.visibility = View.INVISIBLE
-                                }
+                                is UiState.Failed -> pbProgress.visibility = View.INVISIBLE
                             }
                         }
                     }

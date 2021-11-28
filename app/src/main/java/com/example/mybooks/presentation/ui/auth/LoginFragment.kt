@@ -24,46 +24,49 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initStates()
+        initButtons()
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.authState.collect { authState ->
-                when (authState) {
-                    is AuthState.NotLoggedIn -> {
-                        binding.progressBar.visibility = View.GONE
-                        binding.tvError.visibility = View.GONE
-                    }
-                    is AuthState.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                        binding.tvError.visibility = View.GONE
-                    }
-                    is AuthState.LoggedIn -> {
-                        binding.progressBar.visibility = View.GONE
-                        binding.tvError.visibility = View.GONE
-                        findNavController().navigate(R.id.action_loginFragment_to_overviewFragment)
-                    }
-                    is AuthState.Failed -> {
-                        binding.progressBar.visibility = View.GONE
-                        binding.tvError.visibility = View.VISIBLE
-                        binding.tvError.text = authState.message
-                        Timber.tag("FIRESTORE_TEST").d("auth failed: ${authState.message}")
+    private fun initStates() {
+        with(binding) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.authState.collect { authState ->
+                    when (authState) {
+                        is AuthState.NotLoggedIn -> {
+                            progressBar.visibility = View.GONE
+                            tvError.visibility = View.GONE
+                        }
+                        is AuthState.Loading -> {
+                            progressBar.visibility = View.VISIBLE
+                            tvError.visibility = View.GONE
+                        }
+                        is AuthState.LoggedIn -> {
+                            progressBar.visibility = View.GONE
+                            tvError.visibility = View.GONE
+                            findNavController().navigate(R.id.action_loginFragment_to_overviewFragment)
+                        }
+                        is AuthState.Failed -> {
+                            progressBar.visibility = View.GONE
+                            tvError.visibility = View.VISIBLE
+                            tvError.text = authState.message
+                            Timber.tag("FIRESTORE_TEST").d("auth failed: ${authState.message}")
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun initButtons() {
         with(binding) {
             btnLogin.setOnClickListener {
                 val email = tvEmail.text.trim()
                 val password = tvPassword.text.trim()
                 when {
-                    email.isEmpty() -> {
-                        binding.tvEmail.error = "Field is empty"
-                    }
-                    password.isEmpty() -> {
-                        binding.tvPassword.error = "Field is empty"
-                    }
-                    else -> {
-                        viewModel.signIn(email.toString(), password.toString())
-                    }
+                    email.isEmpty() -> tvEmail.error = "Field is empty"
+                    password.isEmpty() -> tvPassword.error = "Field is empty"
+                    else -> viewModel.signIn(email.toString(), password.toString())
                 }
             }
             btnRegister.setOnClickListener {

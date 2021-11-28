@@ -15,13 +15,13 @@ class BookViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun addToFirestore(title: String, author: String) {
-        val uuid = auth.currentUser?.uid
-        val userRef = dbRef.child("Users").child(uuid!!)
+        val userUuid = auth.currentUser?.uid
+        val userRef = dbRef.child("Users").child(userUuid!!)
         val key = userRef.push().key
         val book = Book(uuid = key!!, title = title, author = author)
         userRef.child(key!!).setValue(book)
             .addOnSuccessListener {
-                Timber.tag("FIRESTORE_TEST").d("Book added with ID: $uuid")
+                Timber.tag("FIRESTORE_TEST").d("Book added with ID: $userUuid")
             }
             .addOnFailureListener { e ->
                 Timber.tag("FIRESTORE_TEST").d("Error adding document $e")
