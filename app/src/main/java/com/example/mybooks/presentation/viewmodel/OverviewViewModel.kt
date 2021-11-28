@@ -45,12 +45,12 @@ class OverviewViewModel @Inject constructor(
         booksListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val dataSnapshot = snapshot.child("Users").child(auth.currentUser!!.uid)
-                val books = dataSnapshot.children.map { snap ->
+                val books = dataSnapshot.children.reversed().map { snap ->
                     val value = snap.value as HashMap<*, *>?
                     val uuid = value?.get("uuid").toString()
                     val title = value?.get("title").toString()
                     val author = value?.get("author").toString()
-                    Book(uuid= uuid, title = title, author = author)
+                    Book(uuid = uuid, title = title, author = author)
                 }
                 _uiState.value = UiState.Success(books)
                 Timber.tag("FIRESTORE_TEST").d("Current books: $books")
