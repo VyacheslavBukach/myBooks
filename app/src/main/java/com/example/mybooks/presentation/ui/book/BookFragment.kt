@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.mybooks.R
@@ -28,6 +29,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 btnBookDelete.visibility = View.VISIBLE
                 btnBookDelete.setOnClickListener {
                     viewModel.deleteFromFirestore(args.bookUuid)
+                    findNavController().popBackStack()
                 }
                 btnBookSave.setOnClickListener {
                     val title = tvBookTitle.text.trim()
@@ -45,6 +47,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                                 title.toString(),
                                 author.toString()
                             )
+                            findNavController().popBackStack()
                         }
                     }
                 }
@@ -62,6 +65,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                         }
                         else -> {
                             viewModel.addToFirestore(title.toString(), author.toString())
+                            findNavController().popBackStack()
                         }
                     }
                 }
