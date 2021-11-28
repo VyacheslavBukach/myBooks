@@ -3,7 +3,7 @@ package com.example.mybooks.presentation.adapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.mybooks.R
-import com.example.mybooks.data.Book
+import com.example.mybooks.domain.entity.Book
 import com.example.mybooks.databinding.ItemBookBinding
 
 class BookViewHolder(

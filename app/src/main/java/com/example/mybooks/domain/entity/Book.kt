@@ -1,4 +1,4 @@
-package com.example.mybooks.data
+package com.example.mybooks.domain.entity
 
 import com.google.firebase.database.Exclude
 

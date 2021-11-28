@@ -31,7 +31,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                 tvBookAuthor.setText(args.bookAuthor)
                 btnBookDelete.visibility = View.VISIBLE
                 btnBookDelete.setOnClickListener {
-                    viewModel.deleteFromFirestore(args.bookUuid)
+                    viewModel.deleteFromDatabase(args.bookUuid)
                     findNavController().popBackStack()
                 }
                 btnBookSave.setOnClickListener {
@@ -41,7 +41,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                         title.isEmpty() -> binding.tvBookTitle.error = "Field is empty"
                         author.isEmpty() -> binding.tvBookAuthor.error = "Field is empty"
                         else -> {
-                            viewModel.updateInFirestore(
+                            viewModel.updateInDatabase(
                                 args.bookUuid,
                                 title.toString(),
                                 author.toString()
@@ -59,7 +59,7 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                         title.isEmpty() -> binding.tvBookTitle.error = "Field is empty"
                         author.isEmpty() -> binding.tvBookAuthor.error = "Field is empty"
                         else -> {
-                            viewModel.addToFirestore(title.toString(), author.toString())
+                            viewModel.addInDatabase(title.toString(), author.toString())
                             findNavController().popBackStack()
                         }
                     }

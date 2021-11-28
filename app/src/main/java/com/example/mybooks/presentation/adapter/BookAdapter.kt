@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.mybooks.data.Book
+import com.example.mybooks.domain.entity.Book
 import com.example.mybooks.databinding.ItemBookBinding
 
 class BookAdapter(

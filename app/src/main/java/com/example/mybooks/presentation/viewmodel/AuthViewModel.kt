@@ -35,7 +35,6 @@ class AuthViewModel @Inject constructor(
                     _authState.value = AuthState.Failed("${task.exception?.message}")
                     Timber.tag("FIRESTORE_TEST").d("createUserWithEmail:failure ${task.exception}")
                 }
-
             }
     }
 

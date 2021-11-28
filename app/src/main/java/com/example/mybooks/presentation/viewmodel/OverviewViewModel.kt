@@ -1,7 +1,7 @@
 package com.example.mybooks.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.mybooks.data.Book
+import com.example.mybooks.domain.entity.Book
 import com.example.mybooks.util.AuthState
 import com.example.mybooks.util.UiState
 import com.google.firebase.auth.FirebaseAuth
