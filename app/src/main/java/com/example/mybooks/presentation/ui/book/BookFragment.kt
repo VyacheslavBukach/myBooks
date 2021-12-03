@@ -56,8 +56,8 @@ class BookFragment : Fragment(R.layout.fragment_book) {
                     val title = tvBookTitle.text.trim()
                     val author = tvBookAuthor.text.trim()
                     when {
-                        title.isEmpty() -> binding.tvBookTitle.error = "Field is empty"
-                        author.isEmpty() -> binding.tvBookAuthor.error = "Field is empty"
+                        title.isEmpty() -> binding.tvBookTitle.error = getString(R.string.field_is_empty)
+                        author.isEmpty() -> binding.tvBookAuthor.error = getString(R.string.field_is_empty)
                         else -> {
                             viewModel.addInDatabase(title.toString(), author.toString())
                             findNavController().popBackStack()

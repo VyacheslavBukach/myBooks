@@ -13,7 +13,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="E-mail"
+        android:hint="@string/e_mail"
         app:errorEnabled="true">
 
         <EditText
@@ -28,7 +28,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/password"
         app:errorEnabled="true">
 
         <EditText
@@ -66,8 +66,8 @@
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:text="Login"
+            android:layout_marginEnd="10dp"
+            android:text="@string/login"
             android:textAllCaps="true"
             android:textColor="#FFFF" />
 
@@ -75,9 +75,9 @@
             android:id="@+id/btn_register"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="Register"
+            android:text="@string/register"
             android:textColor="#FFFF" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -85,7 +85,7 @@
         android:id="@+id/btn_forgot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="I forgot password"
+        android:text="@string/i_forgot_password"
         android:textSize="18sp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

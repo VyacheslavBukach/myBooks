@@ -104,7 +104,7 @@ class OverviewFragment : Fragment(R.layout.fragment_overview) {
         with(binding) {
             if (data == emptyList<Book>()) {
                 snackbar =
-                    Snackbar.make(requireView(), "Add some new books", Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(requireView(), getString(R.string.add_some_new_books), Snackbar.LENGTH_INDEFINITE)
                 snackbar?.show()
                 ivError.visibility = View.VISIBLE
             } else {

@@ -19,7 +19,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Title"
+        android:hint="@string/title"
         app:errorEnabled="true">
 
         <EditText
@@ -33,7 +33,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Author"
+        android:hint="@string/author"
         app:errorEnabled="true">
 
         <EditText
@@ -48,13 +48,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Save" />
+        android:text="@string/save" />
 
     <Button
         android:id="@+id/btn_book_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Delete" />
+        android:text="@string/delete" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

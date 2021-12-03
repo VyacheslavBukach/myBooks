@@ -23,7 +23,7 @@ class RestoreFragment : Fragment(R.layout.fragment_restore) {
             binding.btnRestore.setOnClickListener {
                 val email = tvEmail.text.trim()
                 when {
-                    email.isEmpty() -> tvEmail.error = "Field is empty"
+                    email.isEmpty() -> tvEmail.error = getString(R.string.field_is_empty)
                     else -> {
                         viewModel.restore(email.toString())
                         findNavController().popBackStack()

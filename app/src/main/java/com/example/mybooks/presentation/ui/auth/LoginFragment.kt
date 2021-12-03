@@ -64,8 +64,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val email = tvEmail.text.trim()
                 val password = tvPassword.text.trim()
                 when {
-                    email.isEmpty() -> tvEmail.error = "Field is empty"
-                    password.isEmpty() -> tvPassword.error = "Field is empty"
+                    email.isEmpty() -> tvEmail.error = getString(R.string.field_is_empty)
+                    password.isEmpty() -> tvPassword.error = getString(R.string.field_is_empty)
                     else -> viewModel.signIn(email.toString(), password.toString())
                 }
             }

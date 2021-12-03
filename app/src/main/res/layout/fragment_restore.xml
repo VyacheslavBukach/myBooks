@@ -13,7 +13,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="E-mail"
+        android:hint="@string/e_mail"
         app:errorEnabled="true">
 
         <EditText
@@ -50,7 +50,7 @@
             android:id="@+id/btn_restore"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:text="Restore"
+            android:text="@string/restore"
             android:textColor="#FFFF" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

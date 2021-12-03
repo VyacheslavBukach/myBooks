@@ -64,8 +64,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 val email = tvEmail.text.trim()
                 val password = tvPassword.text.trim()
                 when {
-                    email.isEmpty() -> tvEmail.error = "Field is empty"
-                    password.isEmpty() -> tvPassword.error = "Field is empty"
+                    email.isEmpty() -> tvEmail.error = getString(R.string.field_is_empty)
+                    password.isEmpty() -> tvPassword.error = getString(R.string.field_is_empty)
                     else -> viewModel.createAccount(email.toString(), password.toString())
                 }
             }
