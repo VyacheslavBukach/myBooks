@@ -5,8 +5,7 @@ import com.google.firebase.database.Exclude
 data class Book(
     val uuid: String,
     val title: String,
-    val author: String,
-//    val isReading: Boolean = false
+    val author: String
 ) {
 
     @Exclude
@@ -14,8 +13,7 @@ data class Book(
         return mapOf(
             "uuid" to uuid,
             "title" to title,
-            "author" to author,
-//            "isReading" to false
+            "author" to author
         )
     }
 }
