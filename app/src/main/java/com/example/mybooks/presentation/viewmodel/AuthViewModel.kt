@@ -53,4 +53,13 @@ class AuthViewModel @Inject constructor(
                 }
             }
     }
+
+    fun restore(email: String) {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Timber.tag("FIRESTORE_TEST").d("Email sent")
+                }
+            }
+    }
 }

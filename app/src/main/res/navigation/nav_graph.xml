@@ -83,9 +83,21 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_loginFragment_to_restoreFragment"
+            app:destination="@id/restoreFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.mybooks.presentation.ui.settings.SettingsFragment"
         android:label="@string/settings" />
+    <fragment
+        android:id="@+id/restoreFragment"
+        android:name="com.example.mybooks.presentation.ui.auth.RestoreFragment"
+        android:label="@string/restore_password"
+        tools:layout="@layout/fragment_restore" />
 </navigation>

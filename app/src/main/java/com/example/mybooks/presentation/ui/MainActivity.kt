@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.loginFragment,
+                R.id.restoreFragment,
                 R.id.registerFragment,
                 R.id.overviewFragment,
                 R.id.bookFragment
